@@ -7,7 +7,7 @@ class AxiosInterceptor {
     // Private constructor to prevent direct instantiation
     private constructor() {
         this.axiosInstance = axios.create({
-            baseURL: 'http://localhost:8000', // Replace with your API base URL
+            baseURL: process.env.NEXT_PUBLIC_API_URL, // Replace with your API base URL
             // baseURL: 'http://10.105.1.152:8000/api', // Replace with your API base URL
             timeout: 70000,
             headers: {
