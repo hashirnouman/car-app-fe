@@ -1,23 +1,26 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-    const isAuthenticated = checkAuth(request)
+  const isAuthenticated = checkAuth(request);
+  console.log(isAuthenticated);
+  if (!isAuthenticated) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
 
-    if (!isAuthenticated) {
-        return NextResponse.redirect(new URL('/login', request.url))
-    }
-
-    return NextResponse.next()
+  return NextResponse.next();
 }
 
 function checkAuth(request: NextRequest): boolean {
-    // In a real application, you'd check for a valid session or token
-    // For this example, we'll just check for a cookie named 'auth'
-    const authCookie = request.cookies.get('auth')
-    return authCookie?.value === 'authenticated'
+  const token = request.cookies.get("auth")?.value;
+  if (token) {
+    console.log("Token exists", token);
+    return true;
+  }
+
+  return false;
 }
 
 export const config = {
-    matcher: '/home',
-}
+  matcher: "/home",
+};
